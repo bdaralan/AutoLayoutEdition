@@ -5,7 +5,7 @@ public struct ALXAxisAnchor: ALAnchor {
     
     let type: ALXAxisAnchorType
     
-    let item: ALLayoutItem
+    let item: ALAnchorItem
     
     public var constraint: NSLayoutConstraint? { store.constraint }
     
@@ -21,6 +21,10 @@ public struct ALXAxisAnchor: ALAnchor {
         store.constraint = constraint
         store.constraint?.isActive = true
     }
+}
+
+
+extension ALXAxisAnchor {
     
     @discardableResult
     public func equalTo(_ anchor: Self) -> Self {
@@ -66,37 +70,35 @@ extension ALXAxisAnchor {
     
     @discardableResult
     public func equalTo(_ view: UIView) -> Self {
-        let anchor = view.layoutAnchor(for: type)
-        return equalTo(anchor)
+        equalTo(view.layoutAnchor(for: type))
     }
     
     @discardableResult
     public func lessOrEqualTo(_ view: UIView) -> Self {
-        let anchor = view.layoutAnchor(for: type)
-        return lessOrEqualTo(anchor)
+        lessOrEqualTo(view.layoutAnchor(for: type))
     }
     
     @discardableResult
     public func greaterOrEqualTo(_ view: UIView) -> Self {
-        let anchor = view.layoutAnchor(for: type)
-        return greaterOrEqualTo(anchor)
+        greaterOrEqualTo(view.layoutAnchor(for: type))
     }
+}
+
+
+extension ALXAxisAnchor {
     
     @discardableResult
     public func equalTo(_ guide: UILayoutGuide) -> Self {
-        let anchor = guide.layoutAnchor(for: type)
-        return equalTo(anchor)
+        equalTo(guide.layoutAnchor(for: type))
     }
     
     @discardableResult
     public func lessOrEqualTo(_ guide: UILayoutGuide) -> Self {
-        let anchor = guide.layoutAnchor(for: type)
-        return lessOrEqualTo(anchor)
+        lessOrEqualTo(guide.layoutAnchor(for: type))
     }
     
     @discardableResult
     public func greaterOrEqualTo(_ guide: UILayoutGuide) -> Self {
-        let anchor = guide.layoutAnchor(for: type)
-        return greaterOrEqualTo(anchor)
+        greaterOrEqualTo(guide.layoutAnchor(for: type))
     }
 }

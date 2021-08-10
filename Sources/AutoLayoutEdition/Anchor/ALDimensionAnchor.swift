@@ -5,7 +5,7 @@ public struct ALDimensionAnchor: ALAnchor {
     
     let type: ALDimensionAnchorType
     
-    let item: ALLayoutItem
+    let item: ALAnchorItem
     
     public var constraint: NSLayoutConstraint? { store.constraint }
     
@@ -25,6 +25,10 @@ public struct ALDimensionAnchor: ALAnchor {
         let isConstantConstraint = constraint.secondItem == nil
         store.constant = isConstantConstraint ? constraint.constant : nil
     }
+}
+
+
+extension ALDimensionAnchor {
     
     @discardableResult
     public func equalTo(_ anchor: Self) -> Self {
@@ -120,37 +124,35 @@ extension ALDimensionAnchor {
     
     @discardableResult
     public func equalTo(_ view: UIView) -> Self {
-        let anchor = view.layoutAnchor(for: type)
-        return equalTo(anchor)
+        equalTo(view.layoutAnchor(for: type))
     }
     
     @discardableResult
     public func lessOrEqualTo(_ view: UIView) -> Self {
-        let anchor = view.layoutAnchor(for: type)
-        return lessOrEqualTo(anchor)
+        lessOrEqualTo(view.layoutAnchor(for: type))
     }
     
     @discardableResult
     public func greaterOrEqualTo(_ view: UIView) -> Self {
-        let anchor = view.layoutAnchor(for: type)
-        return greaterOrEqualTo(anchor)
+        greaterOrEqualTo(view.layoutAnchor(for: type))
     }
+}
+
+
+extension ALDimensionAnchor {
     
     @discardableResult
     public func equalTo(_ guide: UILayoutGuide) -> Self {
-        let anchor = guide.layoutAnchor(for: type)
-        return equalTo(anchor)
+        equalTo(guide.layoutAnchor(for: type))
     }
     
     @discardableResult
     public func lessOrEqualTo(_ guide: UILayoutGuide) -> Self {
-        let anchor = guide.layoutAnchor(for: type)
-        return lessOrEqualTo(anchor)
+        lessOrEqualTo(guide.layoutAnchor(for: type))
     }
     
     @discardableResult
     public func greaterOrEqualTo(_ guide: UILayoutGuide) -> Self {
-        let anchor = guide.layoutAnchor(for: type)
-        return greaterOrEqualTo(anchor)
+        greaterOrEqualTo(guide.layoutAnchor(for: type))
     }
 }

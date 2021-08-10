@@ -1,7 +1,7 @@
 import UIKit
 
 
-protocol ALLayoutItem {
+protocol ALAnchorItem {
     
     func anchor(for type: ALXAxisAnchorType) -> NSLayoutXAxisAnchor
     
@@ -17,7 +17,7 @@ protocol ALLayoutItem {
 }
 
 
-extension ALLayoutItem {
+extension ALAnchorItem {
     
     func layoutAnchor(for type: ALXAxisAnchorType) -> ALXAxisAnchor {
         .init(type: type, item: self)
@@ -35,7 +35,7 @@ extension ALLayoutItem {
 
 // MARK: - UIView
 
-extension UIView: ALLayoutItem {
+extension UIView: ALAnchorItem {
     
     func anchor(for type: ALXAxisAnchorType) -> NSLayoutXAxisAnchor {
         switch type {
@@ -84,7 +84,7 @@ extension UIView: ALLayoutItem {
 
 // MARK: - UILayoutGuide
 
-extension UILayoutGuide: ALLayoutItem {
+extension UILayoutGuide: ALAnchorItem {
     
     func anchor(for type: ALXAxisAnchorType) -> NSLayoutXAxisAnchor {
         switch type {

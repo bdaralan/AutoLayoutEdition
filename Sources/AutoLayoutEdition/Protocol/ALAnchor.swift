@@ -3,7 +3,7 @@ import UIKit
 
 protocol ALAnchor {
     
-    var item: ALLayoutItem { get }
+    var item: ALAnchorItem { get }
     
     var constraint: NSLayoutConstraint? { get }
 }
