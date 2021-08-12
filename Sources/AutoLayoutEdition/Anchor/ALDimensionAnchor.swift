@@ -3,9 +3,9 @@ import UIKit
 
 public struct ALDimensionAnchor: ALAnchor {
     
-    let type: ALDimensionAnchorType
+    public let type: ALDimensionAnchorType
     
-    let item: ALAnchorItem
+    public let item: ALLayoutItem
     
     public var constraint: NSLayoutConstraint? { store.constraint }
     
@@ -32,8 +32,8 @@ extension ALDimensionAnchor {
     
     @discardableResult
     public func equalTo(_ anchor: Self) -> Self {
-        let anchor1 = item.anchor(for: type)
-        let anchor2 = anchor.item.anchor(for: anchor.type)
+        let anchor1 = item.layoutAnchor(for: type)
+        let anchor2 = anchor.item.layoutAnchor(for: anchor.type)
         let constraint = anchor1.constraint(equalTo: anchor2)
         activateConstraint(constraint)
         return self
@@ -41,8 +41,8 @@ extension ALDimensionAnchor {
     
     @discardableResult
     public func lessOrEqualTo(_ anchor: Self) -> Self {
-        let anchor1 = item.anchor(for: type)
-        let anchor2 = anchor.item.anchor(for: anchor.type)
+        let anchor1 = item.layoutAnchor(for: type)
+        let anchor2 = anchor.item.layoutAnchor(for: anchor.type)
         let constraint = anchor1.constraint(lessThanOrEqualTo: anchor2)
         activateConstraint(constraint)
         return self
@@ -50,8 +50,8 @@ extension ALDimensionAnchor {
     
     @discardableResult
     public func greaterOrEqualTo(_ anchor: Self) -> Self {
-        let anchor1 = item.anchor(for: type)
-        let anchor2 = anchor.item.anchor(for: anchor.type)
+        let anchor1 = item.layoutAnchor(for: type)
+        let anchor2 = anchor.item.layoutAnchor(for: anchor.type)
         let constraint = anchor1.constraint(greaterThanOrEqualTo: anchor2)
         activateConstraint(constraint)
         return self
@@ -59,7 +59,7 @@ extension ALDimensionAnchor {
     
     @discardableResult
     public func equalTo(_ constant: CGFloat) -> Self {
-        let anchor = item.anchor(for: type)
+        let anchor = item.layoutAnchor(for: type)
         let constraint = anchor.constraint(equalToConstant: constant)
         activateConstraint(constraint)
         return self
@@ -67,7 +67,7 @@ extension ALDimensionAnchor {
     
     @discardableResult
     public func lessOrEqualTo(_ constant: CGFloat) -> Self {
-        let anchor = item.anchor(for: type)
+        let anchor = item.layoutAnchor(for: type)
         let constraint = anchor.constraint(lessThanOrEqualToConstant: constant)
         activateConstraint(constraint)
         return self
@@ -75,7 +75,7 @@ extension ALDimensionAnchor {
     
     @discardableResult
     public func greaterOrEqualTo(_ constant: CGFloat) -> Self {
-        let anchor = item.anchor(for: type)
+        let anchor = item.layoutAnchor(for: type)
         let constraint = anchor.constraint(greaterThanOrEqualToConstant: constant)
         activateConstraint(constraint)
         return self
@@ -85,9 +85,13 @@ extension ALDimensionAnchor {
     public func multiplier(_ multiplier: CGFloat) -> Self {
         guard let constraint = store.constraint else { return self }
         guard let view1 = constraint.firstItem, let view2 = constraint.secondItem else { return self }
+        let attribute1 = constraint.firstAttribute
+        let attribute2 = constraint.secondAttribute
+        let relation = constraint.relation
+        let constant = constraint.constant
         let newConstraint = NSLayoutConstraint(
-            item: view1, attribute: constraint.firstAttribute, relatedBy: constraint.relation,
-            toItem: view2, attribute: constraint.secondAttribute, multiplier: multiplier, constant: constraint.constant
+            item: view1, attribute: attribute1, relatedBy: relation,
+            toItem: view2, attribute: attribute2, multiplier: multiplier, constant: constant
         )
         activateConstraint(newConstraint)
         return self
@@ -102,8 +106,8 @@ extension ALDimensionAnchor {
     }
     
     @discardableResult
-    public func padding(_ padding: CGFloat) -> Self {
-        adding(-padding * 2)
+    public func subtracting(_ subtracting: CGFloat) -> Self {
+        adding(-subtracting)
     }
     
     @discardableResult
@@ -124,17 +128,17 @@ extension ALDimensionAnchor {
     
     @discardableResult
     public func equalTo(_ view: UIView) -> Self {
-        equalTo(view.layoutAnchor(for: type))
+        equalTo(view.anchorItem.anchor(for: type))
     }
     
     @discardableResult
     public func lessOrEqualTo(_ view: UIView) -> Self {
-        lessOrEqualTo(view.layoutAnchor(for: type))
+        lessOrEqualTo(view.anchorItem.anchor(for: type))
     }
     
     @discardableResult
     public func greaterOrEqualTo(_ view: UIView) -> Self {
-        greaterOrEqualTo(view.layoutAnchor(for: type))
+        greaterOrEqualTo(view.anchorItem.anchor(for: type))
     }
 }
 
@@ -143,16 +147,16 @@ extension ALDimensionAnchor {
     
     @discardableResult
     public func equalTo(_ guide: UILayoutGuide) -> Self {
-        equalTo(guide.layoutAnchor(for: type))
+        equalTo(guide.anchorItem.anchor(for: type))
     }
     
     @discardableResult
     public func lessOrEqualTo(_ guide: UILayoutGuide) -> Self {
-        lessOrEqualTo(guide.layoutAnchor(for: type))
+        lessOrEqualTo(guide.anchorItem.anchor(for: type))
     }
     
     @discardableResult
     public func greaterOrEqualTo(_ guide: UILayoutGuide) -> Self {
-        greaterOrEqualTo(guide.layoutAnchor(for: type))
+        greaterOrEqualTo(guide.anchorItem.anchor(for: type))
     }
 }

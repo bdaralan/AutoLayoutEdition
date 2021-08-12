@@ -1,5 +1,5 @@
 import XCTest
-@testable import AutoLayoutEdition
+import AutoLayoutEdition
 
 
 final class ALViewLayoutAnchorTests: XCTestCase {
@@ -10,12 +10,25 @@ final class ALViewLayoutAnchorTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        canvas = UIView(frame: CGRect(x: 0, y: 0, width: 900, height: 400))
+        canvas = UIView(frame: randomCanvasFrame())
         view1 = UIView()
         view2 = UIView()
         
         canvas.addSubview(view1)
         canvas.addSubview(view2)
+    }
+    
+    func randomCanvasFrame() -> CGRect {
+        let x = randomEvenNumber(in: 0...100)
+        let y = randomEvenNumber(in: 0...100)
+        let width = randomEvenNumber(in: 900...1400)
+        let height = randomEvenNumber(in: 400...700)
+        return .init(x: x, y: y, width: width, height: height)
+    }
+    
+    func randomEvenNumber(in range: ClosedRange<Int>) -> Int {
+        let number = Int.random(in: range)
+        return number.isMultiple(of: 2) ? number : number + 1
     }
     
     func testAxis() {
@@ -66,44 +79,28 @@ final class ALViewLayoutAnchorTests: XCTestCase {
         XCTAssertEqual(view1.bounds.size, canvas.bounds.size)
     }
     
-    func testDimensionPadding() {
+    func testDimensionAdding() {
         view1.anchor { anchor in
-            anchor.width.equalTo(canvas).padding(10)
-            anchor.height.equalTo(canvas).padding(10)
+            anchor.width.equalTo(canvas).adding(20)
+            anchor.height.equalTo(canvas).adding(20)
         }
         
-        view2.anchor { anchor in
-            anchor.width.equalTo(canvas).padding(-10)
-            anchor.height.equalTo(canvas).padding(-10)
+        canvas.layoutIfNeeded()
+        
+        XCTAssertEqual(view1.bounds.width, canvas.bounds.width + 20)
+        XCTAssertEqual(view1.bounds.height, canvas.bounds.height + 20)
+    }
+    
+    func testDimensionSubtracting() {
+        view1.anchor { anchor in
+            anchor.width.equalTo(canvas).subtracting(20)
+            anchor.height.equalTo(canvas).subtracting(20)
         }
         
         canvas.layoutIfNeeded()
         
         XCTAssertEqual(view1.bounds.width, canvas.bounds.width - 20)
         XCTAssertEqual(view1.bounds.height, canvas.bounds.height - 20)
-        
-        XCTAssertEqual(view2.bounds.width, canvas.bounds.width + 20)
-        XCTAssertEqual(view2.bounds.height, canvas.bounds.height + 20)
-    }
-    
-    func testDimensionAdding() {
-        view1.anchor { anchor in
-            anchor.width.equalTo(canvas).adding(10)
-            anchor.height.equalTo(canvas).adding(10)
-        }
-        
-        view2.anchor { anchor in
-            anchor.width.equalTo(canvas).adding(-10)
-            anchor.height.equalTo(canvas).adding(-10)
-        }
-        
-        canvas.layoutIfNeeded()
-        
-        XCTAssertEqual(view1.bounds.width, canvas.bounds.width + 10)
-        XCTAssertEqual(view1.bounds.height, canvas.bounds.height + 10)
-        
-        XCTAssertEqual(view2.bounds.width, canvas.bounds.width - 10)
-        XCTAssertEqual(view2.bounds.height, canvas.bounds.height - 10)
     }
     
     func testPriority() {
@@ -174,7 +171,8 @@ final class ALViewLayoutAnchorTests: XCTestCase {
         
         canvas.layoutIfNeeded()
         
-        XCTAssertEqual(view1.center, canvas.center)
+        XCTAssertEqual(view1.center.x, canvas.bounds.width / 2)
+        XCTAssertEqual(view1.center.y, canvas.bounds.height / 2)
     }
     
     func testCenterToPadding() {
@@ -188,11 +186,11 @@ final class ALViewLayoutAnchorTests: XCTestCase {
         
         canvas.layoutIfNeeded()
         
-        XCTAssertEqual(view1.center.x, canvas.center.x + 10)
-        XCTAssertEqual(view1.center.y, canvas.center.y + 20)
+        XCTAssertEqual(view1.center.x, canvas.bounds.width / 2 + 10)
+        XCTAssertEqual(view1.center.y, canvas.bounds.height / 2 + 20)
         
-        XCTAssertEqual(view2.center.x, canvas.center.x - 10)
-        XCTAssertEqual(view2.center.y, canvas.center.y - 20)
+        XCTAssertEqual(view2.center.x, canvas.bounds.width / 2 - 10)
+        XCTAssertEqual(view2.center.y, canvas.bounds.height / 2 - 20)
     }
     
     func testSizeTo() {
@@ -203,8 +201,17 @@ final class ALViewLayoutAnchorTests: XCTestCase {
         XCTAssertEqual(view1.bounds.size, canvas.bounds.size)
     }
     
-    func testSizeToPadding() {
-        view1.anchor.sizeTo(canvas).padding(width: 10, height: 20)
+    func testSizeToAdding() {
+        view1.anchor.sizeTo(canvas).adding(width: 20, height: 40)
+        
+        canvas.layoutIfNeeded()
+        
+        XCTAssertEqual(view1.bounds.width, canvas.bounds.width + 20)
+        XCTAssertEqual(view1.bounds.height, canvas.bounds.height + 40)
+    }
+    
+    func testSizeToSubtracting() {
+        view1.anchor.sizeTo(canvas).subtracting(width: 20, height: 40)
         
         canvas.layoutIfNeeded()
         

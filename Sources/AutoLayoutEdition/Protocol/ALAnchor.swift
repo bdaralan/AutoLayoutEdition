@@ -1,9 +1,9 @@
 import UIKit
 
 
-protocol ALAnchor {
+public protocol ALAnchor {
     
-    var item: ALAnchorItem { get }
+    var item: ALLayoutItem { get }
     
     var constraint: NSLayoutConstraint? { get }
 }

@@ -3,7 +3,8 @@ import UIKit
 
 public struct ALViewLayoutAnchor: ALLayoutAnchor, ALLayoutBaselineAnchor {
     
-    let view: UIView
+    let item: ALViewLayoutItem
+    public var view: UIView { item.view }
     
     public let top: ALYAxisAnchor
     public let bottom: ALYAxisAnchor
@@ -20,28 +21,16 @@ public struct ALViewLayoutAnchor: ALLayoutAnchor, ALLayoutBaselineAnchor {
     public let lastBaseline: ALYAxisAnchor
     
     init(view: UIView) {
-        self.view = view
-        top = .init(type: .top, item: view)
-        bottom = .init(type: .bottom, item: view)
-        leading = .init(type: .leading, item: view)
-        trailing = .init(type: .trailing, item: view)
-        centerX = .init(type: .centerX, item: view)
-        centerY = .init(type: .centerY, item: view)
-        width = .init(type: .width, item: view)
-        height = .init(type: .height, item: view)
-        firstBaseline = .init(type: .firstBaseline, item: view)
-        lastBaseline = .init(type: .lastBaseline, item: view)
-    }
-}
-
-
-extension UIView {
-
-    public var anchor: ALViewLayoutAnchor {
-        .init(view: self)
-    }
-    
-    public func anchor(_ anchor: (ALViewLayoutAnchor) -> Void) {
-        anchor(self.anchor)
+        item = .init(view: view)
+        top = .init(type: .top, item: item)
+        bottom = .init(type: .bottom, item: item)
+        leading = .init(type: .leading, item: item)
+        trailing = .init(type: .trailing, item: item)
+        centerX = .init(type: .centerX, item: item)
+        centerY = .init(type: .centerY, item: item)
+        width = .init(type: .width, item: item)
+        height = .init(type: .height, item: item)
+        firstBaseline = .init(type: .firstBaseline, item: item)
+        lastBaseline = .init(type: .lastBaseline, item: item)
     }
 }

@@ -1,14 +1,14 @@
 import Foundation
 
 
-enum ALXAxisAnchorType {
+public enum ALXAxisAnchorType {
     case leading
     case trailing
     case centerX
 }
 
 
-enum ALYAxisAnchorType {
+public enum ALYAxisAnchorType {
     case top
     case bottom
     case centerY
@@ -17,7 +17,7 @@ enum ALYAxisAnchorType {
 }
 
 
-enum ALDimensionAnchorType {
+public enum ALDimensionAnchorType {
     case width
     case height
 }

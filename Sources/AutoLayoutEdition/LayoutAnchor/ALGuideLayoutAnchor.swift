@@ -3,7 +3,8 @@ import UIKit
 
 public struct ALGuideLayoutAnchor: ALLayoutAnchor {
     
-    let guide: UILayoutGuide
+    let item: ALGuideLayoutItem
+    public var guide: UILayoutGuide { item.guide }
     
     public let top: ALYAxisAnchor
     public let bottom: ALYAxisAnchor
@@ -17,26 +18,14 @@ public struct ALGuideLayoutAnchor: ALLayoutAnchor {
     public let height: ALDimensionAnchor
     
     init(guide: UILayoutGuide) {
-        self.guide = guide
-        top = .init(type: .top, item: guide)
-        bottom = .init(type: .bottom, item: guide)
-        leading = .init(type: .leading, item: guide)
-        trailing = .init(type: .trailing, item: guide)
-        centerX = .init(type: .centerX, item: guide)
-        centerY = .init(type: .centerY, item: guide)
-        width = .init(type: .width, item: guide)
-        height = .init(type: .height, item: guide)
-    }
-}
-
-
-extension UILayoutGuide {
-    
-    public var anchor: ALGuideLayoutAnchor {
-        .init(guide: self)
-    }
-    
-    public func anchor(_ anchor: (ALGuideLayoutAnchor) -> Void) {
-        anchor(self.anchor)
+        item = .init(guide: guide)
+        top = .init(type: .top, item: item)
+        bottom = .init(type: .bottom, item: item)
+        leading = .init(type: .leading, item: item)
+        trailing = .init(type: .trailing, item: item)
+        centerX = .init(type: .centerX, item: item)
+        centerY = .init(type: .centerY, item: item)
+        width = .init(type: .width, item: item)
+        height = .init(type: .height, item: item)
     }
 }
