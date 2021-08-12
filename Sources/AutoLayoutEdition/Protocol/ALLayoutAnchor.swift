@@ -43,54 +43,6 @@ extension ALLayoutAnchor {
         return self
     }
     
-    /// Pin edge anchor to view.
-    ///
-    /// - Parameter view: The view to pin to.
-    @discardableResult
-    public func pinTo(_ view: UIView) -> Self {
-        pinTo(item: ALViewLayoutItem(view: view))
-    }
-    
-    /// Pin edge anchor to guide.
-    ///
-    /// - Parameter guide: The guide to pin to.
-    @discardableResult
-    public func pinTo(_ guide: UILayoutGuide) -> Self {
-        pinTo(item: ALGuideLayoutItem(guide: guide))
-    }
-    
-    /// Pin center anchor to view.
-    ///
-    /// - Parameter view: The view to center to.
-    @discardableResult
-    public func centerTo(_ view: UIView) -> Self {
-        centerTo(item: ALViewLayoutItem(view: view))
-    }
-    
-    /// Pin center anchor to guide.
-    ///
-    /// - Parameter guide: The guide to center to.
-    @discardableResult
-    public func centerTo(_ guide: UILayoutGuide) -> Self {
-        centerTo(item: ALGuideLayoutItem(guide: guide))
-    }
-    
-    /// Set size anchor to view.
-    ///
-    /// - Parameter view: The view to size to.
-    @discardableResult
-    public func sizeTo(_ view: UIView) -> Self {
-        sizeTo(item: ALViewLayoutItem(view: view))
-    }
-    
-    /// Set size anchor to guide.
-    ///
-    /// - Parameter guide: The guide to size to.
-    @discardableResult
-    public func sizeTo(_ guide: UILayoutGuide) -> Self {
-        sizeTo(item: ALGuideLayoutItem(guide: guide))
-    }
-    
     /// Set edge anchor padding.
     ///
     /// The each padding is applied to anchor that has been set.
@@ -131,5 +83,61 @@ extension ALLayoutAnchor {
         self.width.subtracting(width)
         self.height.subtracting(height)
         return self
+    }
+}
+
+
+extension ALLayoutAnchor {
+    
+    /// Pin edge anchor to view.
+    ///
+    /// - Parameter view: The view to pin to.
+    @discardableResult
+    public func pinTo(_ view: UIView) -> Self {
+        pinTo(item: view.anchorItem)
+    }
+    
+    /// Pin center anchor to view.
+    ///
+    /// - Parameter view: The view to center to.
+    @discardableResult
+    public func centerTo(_ view: UIView) -> Self {
+        centerTo(item: view.anchorItem)
+    }
+    
+    /// Set size anchor to view.
+    ///
+    /// - Parameter view: The view to size to.
+    @discardableResult
+    public func sizeTo(_ view: UIView) -> Self {
+        sizeTo(item: view.anchorItem)
+    }
+}
+
+
+extension ALLayoutAnchor {
+    
+    /// Pin edge anchor to guide.
+    ///
+    /// - Parameter guide: The guide to pin to.
+    @discardableResult
+    public func pinTo(_ guide: UILayoutGuide) -> Self {
+        pinTo(item: guide.anchorItem)
+    }
+    
+    /// Pin center anchor to guide.
+    ///
+    /// - Parameter guide: The guide to center to.
+    @discardableResult
+    public func centerTo(_ guide: UILayoutGuide) -> Self {
+        centerTo(item: guide.anchorItem)
+    }
+    
+    /// Set size anchor to guide.
+    ///
+    /// - Parameter guide: The guide to size to.
+    @discardableResult
+    public func sizeTo(_ guide: UILayoutGuide) -> Self {
+        sizeTo(item: guide.anchorItem)
     }
 }
