@@ -3,31 +3,25 @@ import UIKit
 
 public protocol ALAnchor {
     
+    associatedtype AnchorType: ALAnchorType
+    
+    /// The anchor type.
+    var type: AnchorType { get }
+    
+    /// The anchor relation.
+    var relation: ALAnchorRelation { get }
+    
+    /// The anchor layout item.
+    ///
+    /// The item that can provide `leadingAnchor`, `centerXAnchor`, or `widthAnchor`.
     var item: ALLayoutItem { get }
     
-    var constraint: NSLayoutConstraint? { get }
-}
-
-
-extension ALAnchor {
-    
-    /// The anchor active state.
-    public var isActive: Bool {
-        get { constraint?.isActive ?? false }
-        nonmutating set { constraint?.isActive = newValue }
-    }
+    /// The store object that activate and store constraints.
+    var store: ALLayoutStore { get }
     
     /// Set anchor priority.
-    @discardableResult
-    public func priority(_ priority: Float) -> Self {
-        constraint?.priority = .init(priority)
-        return self
-    }
+    func priority(_ priority: Float) -> Self
     
     /// Set anchor priority.
-    @discardableResult
-    public func priority(_ priority: ALAnchorPriority) -> Self {
-        constraint?.priority = .init(priority.value)
-        return self
-    }
+    func priority(_ priority: ALAnchorPriority) -> Self
 }

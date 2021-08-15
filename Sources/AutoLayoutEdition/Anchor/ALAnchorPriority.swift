@@ -20,6 +20,10 @@ public struct ALAnchorPriority {
     static public func -(lhs: Self, rhs: Float) -> Self {
         .init(lhs.value - rhs)
     }
+}
+
+
+extension ALAnchorPriority {
     
     static public let required = ALAnchorPriority(.required)
     

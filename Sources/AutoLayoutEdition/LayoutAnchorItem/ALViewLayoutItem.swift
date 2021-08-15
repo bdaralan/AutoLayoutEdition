@@ -5,7 +5,7 @@ struct ALViewLayoutItem: ALLayoutItem {
     
     let view: UIView
     
-    func layoutAnchor(for type: ALXAxisAnchorType) -> NSLayoutXAxisAnchor {
+    func anchor(for type: ALXAxisAnchorType) -> NSLayoutXAxisAnchor {
         switch type {
         case .leading: return view.leadingAnchor
         case .trailing: return view.trailingAnchor
@@ -13,7 +13,7 @@ struct ALViewLayoutItem: ALLayoutItem {
         }
     }
     
-    func layoutAnchor(for type: ALYAxisAnchorType) -> NSLayoutYAxisAnchor {
+    func anchor(for type: ALYAxisAnchorType) -> NSLayoutYAxisAnchor {
         switch type {
         case .top: return view.topAnchor
         case .bottom: return view.bottomAnchor
@@ -23,15 +23,11 @@ struct ALViewLayoutItem: ALLayoutItem {
         }
     }
     
-    func layoutAnchor(for type: ALDimensionAnchorType) -> NSLayoutDimension {
+    func anchor(for type: ALDimensionAnchorType) -> NSLayoutDimension {
         switch type {
         case .width: return view.widthAnchor
         case .height: return view.heightAnchor
         }
-    }
-    
-    func enableAutoLayout() {
-        view.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func setHuggingPriority(_ priority: ALAnchorPriority, for type: ALDimensionAnchorType) {

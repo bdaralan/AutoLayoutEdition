@@ -3,141 +3,65 @@ import UIKit
 
 public protocol ALLayoutAnchor {
     
-    var top: ALYAxisAnchor { get }
+    var item: ALLayoutItem { get }
     
-    var bottom: ALYAxisAnchor { get }
-    
-    var leading: ALXAxisAnchor { get }
-    
-    var trailing: ALXAxisAnchor { get }
-    
-    var centerX: ALXAxisAnchor { get }
-    
-    var centerY: ALYAxisAnchor { get }
-    
-    var width: ALDimensionAnchor { get }
-    
-    var height: ALDimensionAnchor { get }
+    var store: ALLayoutStore { get }
 }
 
 
 extension ALLayoutAnchor {
     
-    func pinTo(item: ALLayoutItem) -> Self {
-        top.equalTo(item.anchor(for: .top))
-        bottom.equalTo(item.anchor(for: .bottom))
-        leading.equalTo(item.anchor(for: .leading))
-        trailing.equalTo(item.anchor(for: .trailing))
-        return self
+    /// The top anchor.
+    public var top: ALYAxisAnchor {
+        .init(type: .top, relation: .none, item: item, store: store)
+    }
+    /// The bottom anchor.
+    public var bottom: ALYAxisAnchor {
+        .init(type: .bottom, relation: .none, item: item, store: store)
     }
     
-    func centerTo(item: ALLayoutItem) -> Self {
-        centerX.equalTo(item.anchor(for: .centerX))
-        centerY.equalTo(item.anchor(for: .centerY))
-        return self
+    /// The leading anchor.
+    public var leading: ALXAxisAnchor {
+        .init(type: .leading, relation: .none, item: item, store: store)
     }
     
-    func sizeTo(item: ALLayoutItem) -> Self {
-        width.equalTo(item.anchor(for: .width))
-        height.equalTo(item.anchor(for: .height))
-        return self
+    /// The trailing anchor.
+    public var trailing: ALXAxisAnchor {
+        .init(type: .trailing, relation: .none, item: item, store: store)
     }
-    
-    /// Set edge anchor padding.
-    ///
-    /// The each padding is applied to anchor that has been set.
-    @discardableResult
-    public func padding(top: CGFloat, leading: CGFloat, bottom: CGFloat, trailing: CGFloat) -> Self {
-        self.top.padding(top)
-        self.bottom.padding(bottom)
-        self.leading.padding(leading)
-        self.trailing.padding(trailing)
-        return self
-    }
-    
-    /// Set center anchor padding.
-    ///
-    /// The each padding is applied to anchor that has been set.
-    @discardableResult
-    public func padding(centerX: CGFloat, centerY: CGFloat) -> Self {
-        self.centerX.padding(centerX)
-        self.centerY.padding(centerY)
-        return self
-    }
-    
-    /// Adjust size anchor.
-    ///
-    /// The each value is applied to anchor that has been set.
-    @discardableResult
-    public func adding(width: CGFloat, height: CGFloat) -> Self {
-        self.width.adding(width)
-        self.height.adding(height)
-        return self
-    }
-    
-    /// Adjust size anchor.
-    ///
-    /// The each value is applied to anchor that has been set.
-    @discardableResult
-    public func subtracting(width: CGFloat, height: CGFloat) -> Self {
-        self.width.subtracting(width)
-        self.height.subtracting(height)
-        return self
-    }
-}
 
-
-extension ALLayoutAnchor {
-    
-    /// Pin edge anchor to view.
-    ///
-    /// - Parameter view: The view to pin to.
-    @discardableResult
-    public func pinTo(_ view: UIView) -> Self {
-        pinTo(item: view.anchorItem)
+    /// The center x anchor.
+    public var centerX: ALXAxisAnchor {
+        .init(type: .centerX, relation: .none, item: item, store: store)
     }
     
-    /// Pin center anchor to view.
-    ///
-    /// - Parameter view: The view to center to.
-    @discardableResult
-    public func centerTo(_ view: UIView) -> Self {
-        centerTo(item: view.anchorItem)
+    /// The center y anchor.
+    public var centerY: ALYAxisAnchor {
+        .init(type: .centerY, relation: .none, item: item, store: store)
     }
     
-    /// Set size anchor to view.
-    ///
-    /// - Parameter view: The view to size to.
-    @discardableResult
-    public func sizeTo(_ view: UIView) -> Self {
-        sizeTo(item: view.anchorItem)
-    }
-}
-
-
-extension ALLayoutAnchor {
-    
-    /// Pin edge anchor to guide.
-    ///
-    /// - Parameter guide: The guide to pin to.
-    @discardableResult
-    public func pinTo(_ guide: UILayoutGuide) -> Self {
-        pinTo(item: guide.anchorItem)
+    /// The width anchor.
+    public var width: ALDimensionAnchor {
+        .init(type: .width, relation: .none, item: item, store: store)
     }
     
-    /// Pin center anchor to guide.
-    ///
-    /// - Parameter guide: The guide to center to.
-    @discardableResult
-    public func centerTo(_ guide: UILayoutGuide) -> Self {
-        centerTo(item: guide.anchorItem)
+    /// The height anchor.
+    public var height: ALDimensionAnchor {
+        .init(type: .height, relation: .none, item: item, store: store)
     }
     
-    /// Set size anchor to guide.
-    ///
-    /// - Parameter guide: The guide to size to.
-    @discardableResult
-    public func sizeTo(_ guide: UILayoutGuide) -> Self {
-        sizeTo(item: guide.anchorItem)
+    /// The `top`, `bottom`, `leading`, and `trailing` anchors.
+    public var edges: ALEdgeAnchor {
+        .init(relation: .none, item: item, store: store)
+    }
+    
+    /// The `centerX` and `centerY` anchors.
+    public var center: ALCenterAnchor {
+        .init(relation: .none, item: item, store: store)
+    }
+    
+    /// The `width` and `height` anchors.
+    public var size: ALSizeAnchor {
+        .init(relation: .none, item: item, store: store)
     }
 }
