@@ -16,7 +16,7 @@ public protocol ALAnchor {
     /// The item that can provide `leadingAnchor`, `centerXAnchor`, or `widthAnchor`.
     var item: ALLayoutItem { get }
     
-    /// The store object that activate and store constraints.
+    /// The store object that can activate and store constraints.
     var store: ALLayoutStore { get }
     
     /// Set anchor priority.
