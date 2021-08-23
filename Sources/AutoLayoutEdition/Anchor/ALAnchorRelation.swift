@@ -1,6 +1,8 @@
 import Foundation
 
 
+/// Anchor layout relation.
+///
 public enum ALAnchorRelation: String {
     
     var identifier: String { rawValue }

@@ -1,10 +1,14 @@
 import Foundation
 
 
+/// An anchor that can layout first and last baseline.
+///
 public protocol ALLayoutBaselineAnchor {
     
+    /// An item that provides layout anchors.
     var item: ALLayoutItem { get }
     
+    /// A layout store used to store constraints.
     var store: ALLayoutStore { get }
 }
 

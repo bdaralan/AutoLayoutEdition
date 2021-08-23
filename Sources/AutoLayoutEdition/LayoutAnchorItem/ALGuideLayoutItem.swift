@@ -19,7 +19,7 @@ struct ALGuideLayoutItem: ALLayoutItem {
         case .bottom: return guide.bottomAnchor
         case .centerY: return guide.centerYAnchor
         case .firstBaseline, .lastBaseline:
-            print("⚠️ Attempted to use UILayoutGuide's unknown YAxisAnchor '\(type)' (centerYAnchor is used) ⚠️")
+            print("⚠️ Attempted to use YAxisAnchor '\(type)' on UILayoutGuide's (centerYAnchor is used) ⚠️")
             return guide.centerYAnchor
         }
     }
@@ -32,10 +32,10 @@ struct ALGuideLayoutItem: ALLayoutItem {
     }
     
     func setHuggingPriority(_ priority: ALAnchorPriority, for type: ALDimensionAnchorType) {
-        // Guide does not have hugging priority
+        print("⚠️ Setting hugging priority on UILayoutGuide does nothing ⚠️")
     }
     
     func setUncompressingPriority(_ priority: ALAnchorPriority, for type: ALDimensionAnchorType) {
-        // Guide does not have uncompress priority
+        print("⚠️ Setting uncompressing priority on UILayoutGuide does nothing ⚠️")
     }
 }

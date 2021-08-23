@@ -1,6 +1,8 @@
 import UIKit
 
 
+/// An object that can store, activate, and deactivate constraints.
+///
 public protocol ALLayoutStore {
     
     /// The constraints that are set up with the store.

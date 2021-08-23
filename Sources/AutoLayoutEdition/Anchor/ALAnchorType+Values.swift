@@ -1,6 +1,8 @@
 import Foundation
 
 
+// MARK: - X Axis
+
 public enum ALXAxisAnchorType: String, ALAnchorType {
     
     public var identifier: String { rawValue }
@@ -12,6 +14,8 @@ public enum ALXAxisAnchorType: String, ALAnchorType {
     case centerX
 }
 
+
+// MARK: - Y Axis
 
 public enum ALYAxisAnchorType: String, ALAnchorType {
     
@@ -29,6 +33,8 @@ public enum ALYAxisAnchorType: String, ALAnchorType {
 }
 
 
+// MARK: - Dimension
+
 public enum ALDimensionAnchorType: String, ALAnchorType {
     
     public var identifier: String { rawValue }
@@ -39,17 +45,23 @@ public enum ALDimensionAnchorType: String, ALAnchorType {
 }
 
 
+// MARK: - Edge
+
 public struct ALEdgeAnchorType: ALAnchorType {
     
     public var identifier: String { "edges" }
 }
 
 
+// MARK: - Center
+
 public struct ALCenterAnchorType: ALAnchorType {
     
     public var identifier: String { "center" }
 }
 
+
+// MARK: - Size
 
 public struct ALSizeAnchorType: ALAnchorType {
     

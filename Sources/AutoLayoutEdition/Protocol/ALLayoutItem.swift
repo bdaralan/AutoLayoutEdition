@@ -1,6 +1,8 @@
 import UIKit
 
 
+/// A object that can provide layout anchors.
+///
 public protocol ALLayoutItem {
     
     func anchor(for type: ALXAxisAnchorType) -> NSLayoutXAxisAnchor

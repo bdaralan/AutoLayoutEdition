@@ -1,6 +1,8 @@
-import UIKit
+import Foundation
 
 
+/// An anchor that can layout constraint.
+///
 public protocol ALAnchor {
     
     associatedtype AnchorType: ALAnchorType

@@ -1,10 +1,14 @@
-import UIKit
+import Foundation
 
 
+/// An anchor that can layout dimension, center, and edges.
+///
 public protocol ALLayoutAnchor {
     
+    /// An item that provides layout anchors.
     var item: ALLayoutItem { get }
     
+    /// A layout store used to store constraints.
     var store: ALLayoutStore { get }
 }
 

@@ -1,6 +1,8 @@
 import UIKit
 
 
+/// Anchor layout priority.
+///
 public struct ALAnchorPriority {
     
     public let value: Float
