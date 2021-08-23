@@ -288,4 +288,27 @@ final class ALViewLayoutAnchorTests: XCTestCase {
         XCTAssertEqual(view1.bounds.width, canvas.bounds.width - 20)
         XCTAssertEqual(view1.bounds.height, canvas.bounds.height - 40)
     }
+    
+    func testUpdateAnchorUsingAnchorRelationProperty() {
+        view1.anchor { anchor in
+            anchor.leading.equalTo(canvas).padding(20)
+            anchor.top.equalTo(canvas).padding(20)
+            anchor.width.equalTo(10)
+            anchor.height.equalTo(10)
+        }
+        
+        let anchor2 = view2.anchor
+        anchor2.leading.equalTo(view1)
+        anchor2.top.equalTo(view1)
+        anchor2.width.equalTo(200)
+        anchor2.height.equalTo(100)
+        
+        anchor2.leading.equalTo.padding(20)
+        anchor2.top.equalTo.padding(40)
+        
+        canvas.layoutIfNeeded()
+        
+        XCTAssertEqual(view2.frame.origin.x, view1.frame.origin.x + 20)
+        XCTAssertEqual(view2.frame.origin.y, view1.frame.origin.y + 40)
+    }
 }

@@ -162,3 +162,49 @@ extension ALDimensionAnchor {
         greaterOrEqualTo(guide.anchorItem.anchor(for: type))
     }
 }
+
+
+extension ALDimensionAnchor {
+    
+    /// The anchor that already been set with the `equalTo` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var equalTo: Self {
+        .init(type: type, relation: .equalTo, item: item, store: store)
+    }
+    
+    /// The anchor that already been set with the `equalToConstant` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var equalToConstant: Self {
+        .init(type: type, relation: .equalToConstant, item: item, store: store)
+    }
+    
+    /// The anchor that already been set with the `lessOrEqualTo` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var lessOrEqualTo: Self {
+        .init(type: type, relation: .lessOrEqualTo, item: item, store: store)
+    }
+    
+    /// The anchor that already been set with the `lessOrEqualToConstant` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var lessOrEqualToConstant: Self {
+        .init(type: type, relation: .lessOrEqualToConstant, item: item, store: store)
+    }
+    
+    /// The anchor that already been set with the `greaterOrEqualTo` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var greaterOrEqualTo: Self {
+        .init(type: type, relation: .greaterOrEqualTo, item: item, store: store)
+    }
+    
+    /// The anchor that already been set with the `greaterOrEqualToConstant` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var greaterOrEqualToConstant: Self {
+        .init(type: type, relation: .greaterOrEqualToConstant, item: item, store: store)
+    }
+}

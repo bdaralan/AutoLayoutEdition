@@ -15,6 +15,7 @@ extension ALLayoutAnchor {
     public var top: ALYAxisAnchor {
         .init(type: .top, relation: .none, item: item, store: store)
     }
+    
     /// The bottom anchor.
     public var bottom: ALYAxisAnchor {
         .init(type: .bottom, relation: .none, item: item, store: store)

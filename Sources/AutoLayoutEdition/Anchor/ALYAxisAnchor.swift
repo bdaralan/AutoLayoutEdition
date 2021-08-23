@@ -115,3 +115,28 @@ extension ALYAxisAnchor {
         greaterOrEqualTo(guide.anchorItem.anchor(for: type))
     }
 }
+
+
+extension ALYAxisAnchor {
+    
+    /// The anchor that already been set with the `equalTo` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var equalTo: Self {
+        .init(type: type, relation: .equalTo, item: item, store: store)
+    }
+    
+    /// The anchor that already been set with the `lessOrEqualTo` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var lessOrEqualTo: Self {
+        .init(type: type, relation: .lessOrEqualTo, item: item, store: store)
+    }
+    
+    /// The anchor that already been set with the `greaterOrEqualTo` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var greaterOrEqualTo: Self {
+        .init(type: type, relation: .greaterOrEqualTo, item: item, store: store)
+    }
+}

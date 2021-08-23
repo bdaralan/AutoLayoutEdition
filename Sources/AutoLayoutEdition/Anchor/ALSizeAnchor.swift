@@ -77,7 +77,57 @@ extension ALSizeAnchor {
     }
     
     @discardableResult
+    public func lessOrEqualTo(_ view: UIView) -> Self {
+        lessOrEqualTo(view.anchorItem)
+    }
+    
+    @discardableResult
+    public func greaterOrEqualTo(_ view: UIView) -> Self {
+        greaterOrEqualTo(view.anchorItem)
+    }
+}
+
+
+
+extension ALSizeAnchor {
+    
+    @discardableResult
     public func equalTo(_ guide: UILayoutGuide) -> Self {
         equalTo(guide.anchorItem)
+    }
+    
+    @discardableResult
+    public func lessOrEqualTo(_ guide: UILayoutGuide) -> Self {
+        lessOrEqualTo(guide.anchorItem)
+    }
+    
+    @discardableResult
+    public func greaterOrEqualTo(_ guide: UILayoutGuide) -> Self {
+        greaterOrEqualTo(guide.anchorItem)
+    }
+}
+
+
+extension ALSizeAnchor {
+    
+    /// The anchor that already been set with the `equalTo` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var equalTo: Self {
+        .init(relation: .equalTo, item: item, store: store)
+    }
+    
+    /// The anchor that already been set with the `lessOrEqualTo` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var lessOrEqualTo: Self {
+        .init(relation: .lessOrEqualTo, item: item, store: store)
+    }
+    
+    /// The anchor that already been set with the `greaterOrEqualTo` relation.
+    ///
+    /// Use this when needed to update the anchor without having to setup the relation again.
+    public var greaterOrEqualTo: Self {
+        .init(relation: .greaterOrEqualTo, item: item, store: store)
     }
 }
