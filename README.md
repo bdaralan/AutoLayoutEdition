@@ -5,22 +5,23 @@ An auto layout wrapper that makes using auto layout less verbose.
 ## Features
 
 - Support chain call.
-- Store constraints for easy activation and deactivation.
+- Automatically activate, deactivate, and remove constraints.
+- Store constraints for later modification if needed.
 - Setup constraints using one-line or block.
 
 ## Implementation
 
-No fancy codes, just wrapping auto layout in some `protocol`, `struct`, and `enum`.
+No magic codes, just wrapping auto layout in some `protocol`, `struct`, and `enum`.
 
 ### Main Components
 
-- `ALLayoutAnchor` for laying out constraints.
+- `ALLayoutAnchor` is used to lay out constraints.
   - `ALViewLayoutAnchor`
   - `ALGuideLayoutAnchor`
-- `ALLayoutStore` for activating and storing constraints.
+- `ALLayoutStore` is used to activate, deactivate, remove, and store constraints.
   - `ALViewLayoutStore`
   - `ALGuideLayoutStore`
-- `ALAnchor` for specifying constraint's type
+- `ALAnchor` is used to specify the anchor to be laid out.
   - `ALXAxisAnchor`
   - `ALYAxisAnchor`
   - `ALDimensionAnchor`
@@ -30,12 +31,10 @@ No fancy codes, just wrapping auto layout in some `protocol`, `struct`, and `enu
 
 ## Example Code
 
-### Set Constraints
-
-Setting up constraints in general.
+### Create Constraints
 
 ``` Swift
---Canvas--------------------------------
+--Canvas---------------------------------
 |                   40                  |
 |    -------------------------------    |
 |    |                             |    |
@@ -48,7 +47,7 @@ Setting up constraints in general.
 |             -------------             |
 |                                       |
 |                                       |
---BackgroundView------------------------
+--BackgroundView-------------------------
 
 let canvas = UIView()
 let backgroundView = UIView()
@@ -78,53 +77,86 @@ label.anchor { anchor in
 
 ### Update Constraints
 
-Modifying the same constraint will automatically deactivate the old constraint.
+``` Swift
+let canvas = UIView()
+let imageView = UIImageView()
+
+canvas.addSubview(imageView)
+
+// grab an anchor object form imageView and keep using that one
+// store it somewhere if needed (see UIView.anchor documentation)
+let imageAnchor = imageView.anchor
+
+// initial constraints
+imageAnchor.center.equalTo(canvas)
+imageAnchor.width.equalTo(canvas).multiplier(0.5)
+imageAnchor.height.equalTo(250)
+```
 
 ``` Swift
+// ----------
+// EXAMPLE 1: Need to update width to 0.8 multiplier of canvas
+// ----------
+
+// apply the same constraint with 0.8 multiplier
+imageAnchor.width.equalTo(canvas).multiplier(0.8)
+
+// or omit the paramater since the inital setup is also width.equalTo(canvas)
+// think of this as accessing the previous width.equalTo(...) constraint and update it
+imageAnchor.width.equalTo.multiplier(0.8)
+```
+
+``` Swift
+// ----------
+// EXAMPLE 2: Need to update width to 0.5 multiplier of canvas's other subview (otherView)
+// ----------
+
+// width.equalTo(otherView) here will automatically remove the initial width.equalTo(canvas)
+imageAnchor.width.equalTo(otherView).multiplier(0.5)
+```
+
+``` Swift
+// ----------
+// EXAMPLE 3: View controller example
+// ----------
+
 class SomeViewController: UIViewController {
 
-    let imageView = UIImageView()
+    private let imageView = UIImageView()
 
-    // use the same value of imageView's anchor to update its size later.
-    lazy var imageAnchor = imageView.anchor
+    // hold on to imageView's anchor to update its size later
+    //
+    // accessing anchor property always return a new object (see UIView.anchor documentation)
+    private lazy var imageAnchor = imageView.anchor
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.addSubview(imageView)
 
+        // initial constraints
         imageAnchor.width.equalTo(100)
         imageAnchor.height.equalTo(100)
         imageAnchor.center.equalTo(view)
 
-        // setup condition handlers...
+        // setup event handler to call appropriated method...
     }
 
-    func handleSmallSizeConditionTriggered() {
+    private func setSmallSizeImage() {
+        // set width and heigh equal to constant
         imageAnchor.width.equalTo(100)
         imageAnchor.height.equalTo(100)
     }
 
-    func handleMediumSizeConditionTriggered() {
+    private func setMediumSizeImage() {
+        // set width and heigh equal to constant
         imageAnchor.width.equalTo(300)
         imageAnchor.height.equalTo(300)
     }
 
-    func handleLargeSizeConditionTriggered() {
-        imageAnchor.size.equalTo(view).multiplier(0.9)
+    private func setLargeSizeImage() {
+        // size.equalTo(view) = width.equalTo(view) & heigh.equalTo(view)
+        imageAnchor.size.equalTo(view).multiplier(0.8)
     }
 }
-```
-
-### What is considered the same constraint?
-
-``` Swift
-// the same constraint: 'width.equalTo`
-create: anchor.width.equalTo(100)
-update: anchor.width.equalTo(300)
-
-// the same constraints: 'size.equalTo' is 'width.equalTo' and 'height.equalTo'
-create: anchor.width.equalTo(100)
-        anchor.height.equalTo(200)
-update: anchor.size.equalTo(superview).multiplier(0.5)
 ```
