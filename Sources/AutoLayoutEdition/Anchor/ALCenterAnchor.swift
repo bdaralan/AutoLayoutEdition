@@ -24,32 +24,47 @@ public struct ALCenterAnchor: ALAnchor {
         store.constraint(for: .centerY, relation: relation)?.priority = .init(priority.value)
         return self
     }
+    
+    public func remove() {
+        store.removeConstraint(for: .centerX, relation: relation)
+        store.removeConstraint(for: .centerY, relation: relation)
+    }
+    
+    public func deactivate() {
+        store.constraint(for: .centerX, relation: relation)?.isActive = false
+        store.constraint(for: .centerY, relation: relation)?.isActive = false
+    }
+    
+    public func reactivate() {
+        store.constraint(for: .centerX, relation: relation)?.isActive = true
+        store.constraint(for: .centerY, relation: relation)?.isActive = true
+    }
 }
 
 
 extension ALCenterAnchor {
     
-    func equalTo(_ item: ALLayoutItem) -> Self {
+    private func equalTo(_ item: ALLayoutItem) -> Self {
         let centerX = self.item.anchor(for: .centerX).constraint(equalTo: item.anchor(for: .centerX))
         let centerY = self.item.anchor(for: .centerY).constraint(equalTo: item.anchor(for: .centerY))
-        store.activateConstraint(centerX, type: .centerX, relation: .equalTo)
-        store.activateConstraint(centerY, type: .centerY, relation: .equalTo)
+        store.addConstraint(centerX, type: .centerX, relation: .equalTo)
+        store.addConstraint(centerY, type: .centerY, relation: .equalTo)
         return .init(relation: .equalTo, item: item, store: store)
     }
     
-    func lessOrEqualTo(_ item: ALLayoutItem) -> Self {
+    private func lessOrEqualTo(_ item: ALLayoutItem) -> Self {
         let centerX = self.item.anchor(for: .centerX).constraint(lessThanOrEqualTo: item.anchor(for: .centerX))
         let centerY = self.item.anchor(for: .centerY).constraint(lessThanOrEqualTo: item.anchor(for: .centerY))
-        store.activateConstraint(centerX, type: .centerX, relation: .lessOrEqualTo)
-        store.activateConstraint(centerY, type: .centerY, relation: .lessOrEqualTo)
+        store.addConstraint(centerX, type: .centerX, relation: .lessOrEqualTo)
+        store.addConstraint(centerY, type: .centerY, relation: .lessOrEqualTo)
         return .init(relation: .lessOrEqualTo, item: item, store: store)
     }
     
-    func greaterOrEqualTo(_ item: ALLayoutItem) -> Self {
+    private func greaterOrEqualTo(_ item: ALLayoutItem) -> Self {
         let centerX = self.item.anchor(for: .centerX).constraint(greaterThanOrEqualTo: item.anchor(for: .centerX))
         let centerY = self.item.anchor(for: .centerY).constraint(greaterThanOrEqualTo: item.anchor(for: .centerY))
-        store.activateConstraint(centerX, type: .centerX, relation: .greaterOrEqualTo)
-        store.activateConstraint(centerY, type: .centerY, relation: .greaterOrEqualTo)
+        store.addConstraint(centerX, type: .centerX, relation: .greaterOrEqualTo)
+        store.addConstraint(centerY, type: .centerY, relation: .greaterOrEqualTo)
         return .init(relation: .greaterOrEqualTo, item: item, store: store)
     }
     
@@ -108,7 +123,7 @@ extension ALCenterAnchor {
     public var equalTo: Self {
         .init(relation: .equalTo, item: item, store: store)
     }
-    
+
     /// The anchor that already been set with the `lessOrEqualTo` relation.
     ///
     /// Use this when needed to update the anchor without having to setup the relation again.

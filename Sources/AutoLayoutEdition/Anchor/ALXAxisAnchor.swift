@@ -10,38 +10,26 @@ public struct ALXAxisAnchor: ALAnchor {
     public let item: ALLayoutItem
     
     public let store: ALLayoutStore
-    
-    @discardableResult
-    public func priority(_ priority: Float) -> ALXAxisAnchor {
-        store.constraint(for: type, relation: relation)?.priority = .init(priority)
-        return self
-    }
-    
-    @discardableResult
-    public func priority(_ priority: ALAnchorPriority) -> ALXAxisAnchor {
-        store.constraint(for: type, relation: relation)?.priority = .init(priority.value)
-        return self
-    }
 }
 
 
 extension ALXAxisAnchor {
     
-    func equalTo(_ anchor: NSLayoutXAxisAnchor) -> Self {
+    private func equalTo(_ anchor: NSLayoutXAxisAnchor) -> Self {
         let constraint = item.anchor(for: type).constraint(equalTo: anchor)
-        store.activateConstraint(constraint, type: type, relation: .equalTo)
+        store.addConstraint(constraint, type: type, relation: .equalTo)
         return .init(type: type, relation: .equalTo, item: item, store: store)
     }
     
-    func lessOrEqualTo(_ anchor: NSLayoutXAxisAnchor) -> Self {
+    private func lessOrEqualTo(_ anchor: NSLayoutXAxisAnchor) -> Self {
         let constraint = item.anchor(for: type).constraint(lessThanOrEqualTo: anchor)
-        store.activateConstraint(constraint, type: type, relation: .lessOrEqualTo)
+        store.addConstraint(constraint, type: type, relation: .lessOrEqualTo)
         return .init(type: type, relation: .lessOrEqualTo, item: item, store: store)
     }
     
-    func greaterOrEqualTo(_ anchor: NSLayoutXAxisAnchor) -> Self {
+    private func greaterOrEqualTo(_ anchor: NSLayoutXAxisAnchor) -> Self {
         let constraint = item.anchor(for: type).constraint(greaterThanOrEqualTo: anchor)
-        store.activateConstraint(constraint, type: type, relation: .greaterOrEqualTo)
+        store.addConstraint(constraint, type: type, relation: .greaterOrEqualTo)
         return .init(type: type, relation: .greaterOrEqualTo, item: item, store: store)
     }
     

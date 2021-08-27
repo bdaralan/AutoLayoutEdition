@@ -16,7 +16,9 @@ final class ALViewLayoutStore: ALLayoutStore {
         self.view = view
     }
     
-    func activateConstraint(_ constraint: NSLayoutConstraint, type: ALAnchorType, relation: ALAnchorRelation) {
+    func addConstraint(_ constraint: NSLayoutConstraint, type: ALAnchorType, relation: ALAnchorRelation) {
+        guard constraint.firstItem === view else { return }
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         
         let key = "\(type.identifier).\(relation.identifier)"
@@ -26,6 +28,13 @@ final class ALViewLayoutStore: ALLayoutStore {
         constantMap[key] = isConstantConstraint ? nil : constraint.constant
         
         constraint.isActive = true
+    }
+    
+    func removeConstraint(for type: ALAnchorType, relation: ALAnchorRelation) {
+        let key = "\(type.identifier).\(relation.identifier)"
+        constraintMap[key]?.isActive = false
+        constraintMap[key] = nil
+        constantMap[key] = nil
     }
     
     func constraint(for type: ALAnchorType, relation: ALAnchorRelation) -> NSLayoutConstraint? {

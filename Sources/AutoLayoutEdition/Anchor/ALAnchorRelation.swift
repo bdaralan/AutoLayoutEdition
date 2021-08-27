@@ -11,13 +11,7 @@ public enum ALAnchorRelation: String {
     
     case equalTo
     
-    case equalToConstant
-    
     case lessOrEqualTo
     
-    case lessOrEqualToConstant
-    
     case greaterOrEqualTo
-    
-    case greaterOrEqualToConstant
 }

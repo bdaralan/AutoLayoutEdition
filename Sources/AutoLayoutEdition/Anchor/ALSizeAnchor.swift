@@ -24,32 +24,47 @@ public struct ALSizeAnchor: ALAnchor {
         store.constraint(for: .height, relation: relation)?.priority = .init(priority.value)
         return self
     }
+    
+    public func remove() {
+        store.removeConstraint(for: .width, relation: relation)
+        store.removeConstraint(for: .height, relation: relation)
+    }
+    
+    public func deactivate() {
+        store.constraint(for: .width, relation: relation)?.isActive = false
+        store.constraint(for: .height, relation: relation)?.isActive = false
+    }
+    
+    public func reactivate() {
+        store.constraint(for: .width, relation: relation)?.isActive = true
+        store.constraint(for: .height, relation: relation)?.isActive = true
+    }
 }
 
 
 extension ALSizeAnchor {
     
-    func equalTo(_ item: ALLayoutItem) -> Self {
+    private func equalTo(_ item: ALLayoutItem) -> Self {
         let width = self.item.anchor(for: .width).constraint(equalTo: item.anchor(for: .width))
         let height = self.item.anchor(for: .height).constraint(equalTo: item.anchor(for: .height))
-        store.activateConstraint(width, type: .width, relation: .equalTo)
-        store.activateConstraint(height, type: .height, relation: .equalTo)
+        store.addConstraint(width, type: .width, relation: .equalTo)
+        store.addConstraint(height, type: .height, relation: .equalTo)
         return .init(relation: .equalTo, item: item, store: store)
     }
     
-    func lessOrEqualTo(_ item: ALLayoutItem) -> Self {
+    private func lessOrEqualTo(_ item: ALLayoutItem) -> Self {
         let width = self.item.anchor(for: .width).constraint(lessThanOrEqualTo: item.anchor(for: .width))
         let height = self.item.anchor(for: .height).constraint(lessThanOrEqualTo: item.anchor(for: .height))
-        store.activateConstraint(width, type: .width, relation: .lessOrEqualTo)
-        store.activateConstraint(height, type: .height, relation: .lessOrEqualTo)
+        store.addConstraint(width, type: .width, relation: .lessOrEqualTo)
+        store.addConstraint(height, type: .height, relation: .lessOrEqualTo)
         return .init(relation: .lessOrEqualTo, item: item, store: store)
     }
     
-    func greaterOrEqualTo(_ item: ALLayoutItem) -> Self {
+    private func greaterOrEqualTo(_ item: ALLayoutItem) -> Self {
         let width = self.item.anchor(for: .width).constraint(greaterThanOrEqualTo: item.anchor(for: .width))
         let height = self.item.anchor(for: .height).constraint(greaterThanOrEqualTo: item.anchor(for: .height))
-        store.activateConstraint(width, type: .width, relation: .greaterOrEqualTo)
-        store.activateConstraint(height, type: .height, relation: .greaterOrEqualTo)
+        store.addConstraint(width, type: .width, relation: .greaterOrEqualTo)
+        store.addConstraint(height, type: .height, relation: .greaterOrEqualTo)
         return .init(relation: .greaterOrEqualTo, item: item, store: store)
     }
     

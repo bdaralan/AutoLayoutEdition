@@ -8,8 +8,11 @@ public protocol ALLayoutStore {
     /// The constraints that are set up with the store.
     var constraints: [NSLayoutConstraint] { get }
     
-    /// Activate constraint.
-    func activateConstraint(_ constraint: NSLayoutConstraint, type: ALAnchorType, relation: ALAnchorRelation)
+    /// Add and activate the constraint.
+    func addConstraint(_ constraint: NSLayoutConstraint, type: ALAnchorType, relation: ALAnchorRelation)
+    
+    /// Remove and deactivate a constraint with the specified type and relation.
+    func removeConstraint(for type: ALAnchorType, relation: ALAnchorRelation)
     
     /// Retrieve a constraint for type and relation.
     ///
@@ -33,18 +36,33 @@ public protocol ALLayoutStore {
 extension ALLayoutStore {
     
     /// Activate constraint.
-    func activateConstraint(_ constraint: NSLayoutConstraint, type: ALXAxisAnchorType, relation: ALAnchorRelation) {
-        activateConstraint(constraint, type: type, relation: relation)
+    func addConstraint(_ constraint: NSLayoutConstraint, type: ALXAxisAnchorType, relation: ALAnchorRelation) {
+        addConstraint(constraint, type: type, relation: relation)
     }
     
     /// Activate constraint.
-    func activateConstraint(_ constraint: NSLayoutConstraint, type: ALYAxisAnchorType, relation: ALAnchorRelation) {
-        activateConstraint(constraint, type: type, relation: relation)
+    func addConstraint(_ constraint: NSLayoutConstraint, type: ALYAxisAnchorType, relation: ALAnchorRelation) {
+        addConstraint(constraint, type: type, relation: relation)
     }
     
     /// Activate constraint.
-    func activateConstraint(_ constraint: NSLayoutConstraint, type: ALDimensionAnchorType, relation: ALAnchorRelation) {
-        activateConstraint(constraint, type: type, relation: relation)
+    func addConstraint(_ constraint: NSLayoutConstraint, type: ALDimensionAnchorType, relation: ALAnchorRelation) {
+        addConstraint(constraint, type: type, relation: relation)
+    }
+    
+    /// Remove a constraint with the specified type and relation.
+    public func removeConstraint(for type: ALXAxisAnchorType, relation: ALAnchorRelation) {
+        removeConstraint(for: type, relation: relation)
+    }
+    
+    /// Remove a constraint with the specified type and relation.
+    public func removeConstraint(for type: ALYAxisAnchorType, relation: ALAnchorRelation) {
+        removeConstraint(for: type, relation: relation)
+    }
+    
+    /// Remove a constraint with the specified type and relation.
+    public func removeConstraint(for type: ALDimensionAnchorType, relation: ALAnchorRelation) {
+        removeConstraint(for: type, relation: relation)
     }
 
     /// Retrieve the constraint for type and relation.

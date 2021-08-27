@@ -18,9 +18,12 @@ struct ALGuideLayoutItem: ALLayoutItem {
         case .top: return guide.topAnchor
         case .bottom: return guide.bottomAnchor
         case .centerY: return guide.centerYAnchor
-        case .firstBaseline, .lastBaseline:
-            print("⚠️ Attempted to use YAxisAnchor '\(type)' on UILayoutGuide's (centerYAnchor is used) ⚠️")
-            return guide.centerYAnchor
+        case .firstBaseline:
+            print("⚠️ UILayoutGuide does not have firstBaselineAnchor (topAnchor is used) ⚠️")
+            return guide.topAnchor
+        case .lastBaseline:
+            print("⚠️ UILayoutGuide does not have lastBaselineAnchor (bottomAnchor is used) ⚠️")
+            return guide.bottomAnchor
         }
     }
     

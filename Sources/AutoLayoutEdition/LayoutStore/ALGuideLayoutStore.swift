@@ -2,7 +2,7 @@ import UIKit
 
 
 final class ALGuideLayoutStore: ALLayoutStore {
-
+    
     let guide: UILayoutGuide
     
     private var constraintMap: [String: NSLayoutConstraint] = [:]
@@ -16,7 +16,9 @@ final class ALGuideLayoutStore: ALLayoutStore {
         self.guide = guide
     }
     
-    func activateConstraint(_ constraint: NSLayoutConstraint, type: ALAnchorType, relation: ALAnchorRelation) {
+    func addConstraint(_ constraint: NSLayoutConstraint, type: ALAnchorType, relation: ALAnchorRelation) {
+        guard constraint.firstItem === guide else { return }
+        
         let key = "\(type.identifier).\(relation.identifier)"
         let isConstantConstraint = constraint.secondItem == nil
         constraintMap[key]?.isActive = false
@@ -24,6 +26,13 @@ final class ALGuideLayoutStore: ALLayoutStore {
         constantMap[key] = isConstantConstraint ? nil : constraint.constant
         
         constraint.isActive = true
+    }
+    
+    func removeConstraint(for type: ALAnchorType, relation: ALAnchorRelation) {
+        let key = "\(type.identifier).\(relation.identifier)"
+        constraintMap[key]?.isActive = false
+        constraintMap[key] = nil
+        constantMap[key] = nil
     }
     
     func constraint(for type: ALAnchorType, relation: ALAnchorRelation) -> NSLayoutConstraint? {

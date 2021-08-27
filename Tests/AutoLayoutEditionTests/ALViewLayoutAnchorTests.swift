@@ -14,6 +14,9 @@ final class ALViewLayoutAnchorTests: XCTestCase {
     var label3: UILabel!
     var label4: UILabel!
     
+    var guide1: UILayoutGuide!
+    var guide2: UILayoutGuide!
+    
     var canvas: UIView!
     
     override func setUp() {
@@ -35,6 +38,9 @@ final class ALViewLayoutAnchorTests: XCTestCase {
         label4 = UILabel()
         label4.text = "LABEL 4: VERY LONG TEXT IN THE HORIZONTAL AXIS"
         
+        guide1 = UILayoutGuide()
+        guide2 = UILayoutGuide()
+        
         canvas = UIView(frame: randomCanvasFrame())
         canvas.addSubview(view1)
         canvas.addSubview(view2)
@@ -44,6 +50,8 @@ final class ALViewLayoutAnchorTests: XCTestCase {
         canvas.addSubview(label2)
         canvas.addSubview(label3)
         canvas.addSubview(label4)
+        canvas.addLayoutGuide(guide1)
+        canvas.addLayoutGuide(guide2)
     }
     
     func randomCanvasFrame(_ random: Bool = true) -> CGRect {
@@ -191,8 +199,8 @@ final class ALViewLayoutAnchorTests: XCTestCase {
         anchor2.lastBaseline.equalTo(canvas).priority(.low)
 
         let store2 = anchor2.store
-        XCTAssertEqual(store2.constraint(for: .width, relation: .equalToConstant)?.priority, .defaultLow)
-        XCTAssertEqual(store2.constraint(for: .height, relation: .equalToConstant)?.priority, .defaultLow)
+        XCTAssertEqual(store2.constraint(for: .width, relation: .equalTo)?.priority, .defaultLow)
+        XCTAssertEqual(store2.constraint(for: .height, relation: .equalTo)?.priority, .defaultLow)
         XCTAssertEqual(store2.constraint(for: .firstBaseline, relation: .equalTo)?.priority, .defaultLow)
         XCTAssertEqual(store2.constraint(for: .lastBaseline, relation: .equalTo)?.priority, .defaultLow)
     }
@@ -310,5 +318,98 @@ final class ALViewLayoutAnchorTests: XCTestCase {
         
         XCTAssertEqual(view2.frame.origin.x, view1.frame.origin.x + 20)
         XCTAssertEqual(view2.frame.origin.y, view1.frame.origin.y + 40)
+    }
+    
+    func testRemoveAnchor() {
+        let anchor = view1.anchor
+        
+        anchor.size.equalTo(canvas) // add 2, constraints count 2
+        anchor.edges.equalTo(canvas) // add 4, constraints count 6
+        anchor.center.equalTo(canvas) // add 2, constraint count 8
+        
+        anchor.size.equalTo.remove()
+        
+        XCTAssertEqual(anchor.store.constraints.count, 6)
+        
+        anchor.edges.equalTo.remove()
+        
+        XCTAssertEqual(anchor.store.constraints.count, 2)
+        
+        anchor.center.equalTo.remove()
+        
+        XCTAssertEqual(anchor.store.constraints.count, 0)
+        
+        canvas.layoutIfNeeded()
+        
+        XCTAssertNotEqual(view1.bounds, canvas.bounds)
+    }
+    
+    func testDeactivateAnchor() {
+        let anchor = label1.anchor
+        
+        anchor.width.equalTo(500)
+        anchor.height.equalTo(50)
+        anchor.center.equalTo(canvas)
+        
+        label1.sizeToFit()
+        canvas.layoutIfNeeded()
+        
+        XCTAssertEqual(anchor.store.constraint(for: .width, relation: .equalTo)?.isActive, true)
+        XCTAssertEqual(label1.bounds.width, 500)
+        
+        label1.sizeToFit()
+        anchor.width.equalTo.deactivate()
+        canvas.layoutIfNeeded()
+        
+        XCTAssertEqual(anchor.store.constraint(for: .width, relation: .equalTo)?.isActive, false)
+        XCTAssertNotEqual(label1.bounds.width, 500)
+    }
+    
+    func testReactivateAnchor() {
+        let anchor = label1.anchor
+        
+        anchor.width.equalTo(500)
+        anchor.height.equalTo(50)
+        anchor.center.equalTo(canvas)
+        
+        label1.sizeToFit()
+        canvas.layoutIfNeeded()
+        
+        XCTAssertEqual(anchor.store.constraint(for: .width, relation: .equalTo)?.isActive, true)
+        XCTAssertEqual(label1.bounds.width, 500)
+        
+        label1.sizeToFit()
+        anchor.width.equalTo.deactivate()
+        canvas.layoutIfNeeded()
+        
+        XCTAssertEqual(anchor.store.constraint(for: .width, relation: .equalTo)?.isActive, false)
+        XCTAssertNotEqual(label1.bounds.width, 500)
+        
+        label1.sizeToFit()
+        anchor.width.equalTo.reactivate()
+        canvas.layoutIfNeeded()
+        
+        XCTAssertEqual(anchor.store.constraint(for: .width, relation: .equalTo)?.isActive, true)
+        XCTAssertEqual(label1.bounds.width, 500)
+    }
+    
+    func testAnchorViewToGuide() {
+        guide1.anchor { anchor in
+            anchor.width.equalTo(300)
+            anchor.height.equalTo(100)
+            anchor.center.equalTo(canvas)
+        }
+        
+        view1.anchor { anchor in
+            anchor.size.equalTo(guide1)
+            anchor.center.equalTo(guide1)
+        }
+        
+        canvas.layoutIfNeeded()
+        
+        XCTAssertEqual(view1.bounds.width, 300)
+        XCTAssertEqual(view1.bounds.height, 100)
+        XCTAssertEqual(view1.center.x, canvas.bounds.width / 2)
+        XCTAssertEqual(view1.center.y, canvas.bounds.height / 2)
     }
 }

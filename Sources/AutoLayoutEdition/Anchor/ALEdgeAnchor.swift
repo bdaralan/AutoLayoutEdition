@@ -28,44 +28,65 @@ public struct ALEdgeAnchor: ALAnchor {
         store.constraint(for: .trailing, relation: relation)?.priority = .init(priority.value)
         return self
     }
+    
+    public func remove() {
+        store.removeConstraint(for: .top, relation: relation)
+        store.removeConstraint(for: .bottom, relation: relation)
+        store.removeConstraint(for: .leading, relation: relation)
+        store.removeConstraint(for: .trailing, relation: relation)
+    }
+    
+    public func deactivate() {
+        store.constraint(for: .top, relation: relation)?.isActive = false
+        store.constraint(for: .bottom, relation: relation)?.isActive = false
+        store.constraint(for: .leading, relation: relation)?.isActive = false
+        store.constraint(for: .trailing, relation: relation)?.isActive = false
+    }
+    
+    public func reactivate() {
+        store.constraint(for: .top, relation: relation)?.isActive = true
+        store.constraint(for: .bottom, relation: relation)?.isActive = true
+        store.constraint(for: .leading, relation: relation)?.isActive = true
+        store.constraint(for: .trailing, relation: relation)?.isActive = true
+    }
 }
 
 
 extension ALEdgeAnchor {
     
-    func equalTo(_ item: ALLayoutItem) -> Self {
+    private func equalTo(_ item: ALLayoutItem) -> Self {
         let top = self.item.anchor(for: .top).constraint(equalTo: item.anchor(for: .top))
         let bottom = self.item.anchor(for: .bottom).constraint(equalTo: item.anchor(for: .bottom))
         let leading = self.item.anchor(for: .leading).constraint(equalTo: item.anchor(for: .leading))
         let trailing = self.item.anchor(for: .trailing).constraint(equalTo: item.anchor(for: .trailing))
-        store.activateConstraint(top, type: .top, relation: .equalTo)
-        store.activateConstraint(bottom, type: .bottom, relation: .equalTo)
-        store.activateConstraint(leading, type: .leading, relation: .equalTo)
-        store.activateConstraint(trailing, type: .trailing, relation: .equalTo)
+        store.addConstraint(top, type: .top, relation: .equalTo)
+        store.addConstraint(bottom, type: .bottom, relation: .equalTo)
+        store.addConstraint(leading, type: .leading, relation: .equalTo)
+        store.addConstraint(trailing, type: .trailing, relation: .equalTo)
         return .init(relation: .equalTo, item: item, store: store)
     }
     
-    func lessOrEqualTo(_ item: ALLayoutItem) -> Self {
+    private func lessOrEqualTo(_ item: ALLayoutItem) -> Self {
         let top = self.item.anchor(for: .top).constraint(lessThanOrEqualTo: item.anchor(for: .top))
         let bottom = self.item.anchor(for: .bottom).constraint(lessThanOrEqualTo: item.anchor(for: .bottom))
         let leading = self.item.anchor(for: .leading).constraint(lessThanOrEqualTo: item.anchor(for: .leading))
         let trailing = self.item.anchor(for: .trailing).constraint(lessThanOrEqualTo: item.anchor(for: .trailing))
-        store.activateConstraint(top, type: .top, relation: .lessOrEqualTo)
-        store.activateConstraint(bottom, type: .bottom, relation: .lessOrEqualTo)
-        store.activateConstraint(leading, type: .leading, relation: .lessOrEqualTo)
-        store.activateConstraint(trailing, type: .trailing, relation: .lessOrEqualTo)
+        store.addConstraint(top, type: .top, relation: .lessOrEqualTo)
+        store.addConstraint(bottom, type: .bottom, relation: .lessOrEqualTo)
+        store.addConstraint(leading, type: .leading, relation: .lessOrEqualTo)
+        store.addConstraint(trailing, type: .trailing, relation: .lessOrEqualTo)
         return .init(relation: .lessOrEqualTo, item: item, store: store)
     }
     
-    func greaterOrEqualTo(_ item: ALLayoutItem) -> Self {
+    private func greaterOrEqualTo(_ item: ALLayoutItem) -> Self {
         let top = self.item.anchor(for: .top).constraint(greaterThanOrEqualTo: item.anchor(for: .top))
         let bottom = self.item.anchor(for: .bottom).constraint(greaterThanOrEqualTo: item.anchor(for: .bottom))
         let leading = self.item.anchor(for: .leading).constraint(greaterThanOrEqualTo: item.anchor(for: .leading))
         let trailing = self.item.anchor(for: .trailing).constraint(greaterThanOrEqualTo: item.anchor(for: .trailing))
-        store.activateConstraint(top, type: .top, relation: .greaterOrEqualTo)
-        store.activateConstraint(bottom, type: .bottom, relation: .greaterOrEqualTo)
-        store.activateConstraint(leading, type: .leading, relation: .greaterOrEqualTo)
-        store.activateConstraint(trailing, type: .trailing, relation: .greaterOrEqualTo)
+        store.addConstraint(top, type: .top, relation: .greaterOrEqualTo)
+        store.addConstraint(bottom, type: .bottom, relation: .greaterOrEqualTo)
+        store.addConstraint(leading, type: .leading, relation: .greaterOrEqualTo)
+        store.addConstraint(trailing, type: .trailing, relation: .greaterOrEqualTo)
         return .init(relation: .greaterOrEqualTo, item: item, store: store)
     }
     
